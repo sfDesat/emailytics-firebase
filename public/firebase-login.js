@@ -1,18 +1,8 @@
-// Load Firebase libraries dynamically
-const loadFirebase = async () => {
-  const firebaseApp = document.createElement("script");
-  firebaseApp.src = "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  document.head.appendChild(firebaseApp);
+(async () => {
+  // Load Firebase modules using ES module imports via CDN
+  await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+  await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
 
-  const firebaseAuth = document.createElement("script");
-  firebaseAuth.src = "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  document.head.appendChild(firebaseAuth);
-
-  await new Promise((resolve) => {
-    firebaseAuth.onload = resolve;
-  });
-
-  // Initialize Firebase (fill in YOUR actual values)
   const firebaseConfig = {
     apiKey: "AIzaSyDdrj7bG7Nl_B63ReKOtgKO8xK-KRlVpgA",
     authDomain: "emailytics-firebase.firebaseapp.com",
@@ -23,7 +13,6 @@ const loadFirebase = async () => {
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  // Google Sign-In
   const loginWithGoogle = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     try {
@@ -31,8 +20,7 @@ const loadFirebase = async () => {
       const user = result.user;
       const idToken = await user.getIdToken();
 
-      // Send ID token to your backend
-      await fetch("https://your-backend-url.com/api/auth", {
+      await fetch("https://your-backend.com/api/auth", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,13 +35,10 @@ const loadFirebase = async () => {
     }
   };
 
-  // Attach to Webflow button
   document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("login-button");
     if (loginButton) {
       loginButton.addEventListener("click", loginWithGoogle);
     }
   });
-};
-
-loadFirebase();
+})();
