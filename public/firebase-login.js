@@ -1,7 +1,7 @@
 (async () => {
-  // Load Firebase modules using ES module imports via CDN
-  await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
-  await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
+  // Import specific Firebase functions
+  const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
+  const { getAuth, signInWithPopup, GoogleAuthProvider } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js");
 
   const firebaseConfig = {
     apiKey: "AIzaSyDdrj7bG7Nl_B63ReKOtgKO8xK-KRlVpgA",
@@ -10,13 +10,13 @@
     appId: "1:133361977705:web:ad9eb91018c8ebd09495f8",
   };
 
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
   const loginWithGoogle = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new GoogleAuthProvider();
     try {
-      const result = await auth.signInWithPopup(provider);
+      const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const idToken = await user.getIdToken();
 
