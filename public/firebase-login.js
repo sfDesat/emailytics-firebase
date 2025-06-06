@@ -35,10 +35,13 @@
     }
   };
 
-  document.addEventListener("DOMContentLoaded", function () {
+    window.addEventListener("load", function () {
     const loginButton = document.getElementById("login-button");
+    console.log("Button found?", loginButton);
     if (loginButton) {
       loginButton.addEventListener("click", loginWithGoogle);
+    } else {
+      console.warn("Login button not found!");
     }
   });
 })();
